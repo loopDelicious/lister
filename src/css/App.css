@@ -16,4 +16,17 @@
 .itemList {
   text-align: left;
   width: 80%;
+  margin: 0 auto;
+}
+
+.item {
+  padding: 3px;
+}
+
+.item a {
+  color: var(--maincolor);
+}
+
+.item a:hover {
+  color: var(--pop);
 }

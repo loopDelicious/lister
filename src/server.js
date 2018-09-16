@@ -20,12 +20,17 @@ app.get('/root', function(req, res) {
 
     fs.readdir('/', (err, data) => {
         if (err) throw err;
-        console.log(data);
         res.send(JSON.stringify(data));
-        console.log("sent data");
       });
 
 });
+
+app.get('/child', function(req, res) {
+    fs.readdir(req.child, (err, data) => {
+        if (err) throw err;
+        res.send(JSON.stringify(data));
+    })
+})
 
 const port = 4800;
 app.listen(process.env.PORT || port);

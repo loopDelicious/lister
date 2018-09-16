@@ -6,7 +6,8 @@ class App extends Component {
   host = window.location.hostname;
 
   state = {
-    root: []
+    root: [],
+    child: []
   }
 
   getRoot = () => {
@@ -31,6 +32,33 @@ class App extends Component {
         )
   }
 
+  handleSelection = (item) => {
+    console.log(item);
+    fetch('http://' + this.host + ':4800/child', {
+      method: "POST",
+      body: {
+        child: item
+      }
+    })
+    .then(res => res.json())
+    .then(
+      (result) => {
+        // filter out hidden dotfiles
+        let visibleItems = result.filter((item) => {
+          if (item[0] !== ".") {
+            return item
+          }
+        })
+        this.setState({
+          child: visibleItems
+        });
+      },
+      (error) => {
+        this.setState({ error });
+      }
+    )
+  }
+
   componentDidMount = () => {
 
     this.getRoot();
@@ -41,8 +69,10 @@ class App extends Component {
 
     const items = this.state.root.map((item) => {
       return (
-        <div>
-          {item}
+        <div className="item">
+          <a href="#" onClick={this.handleSelection.bind(item)}>
+            <i className="far fa-folder">  {item}</i>
+          </a>
         </div>
       )
     })
@@ -53,10 +83,12 @@ class App extends Component {
           <h2>My Home Directory</h2>
         </div>
         <p className="App-intro">
-          More items
+      
           { this.state.root !== [] ? 
             <div className="itemList">{items}</div>
-            : "No items yet" }
+            : "No items yet" 
+          }
+    
         </p>
       </div>
     );
