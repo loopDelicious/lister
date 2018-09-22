@@ -18,17 +18,34 @@ app.use(bodyParser.json()); // Body parser use JSON data
 
 app.get('/root', function(req, res) {
 
-    fs.readdir('/', (err, data) => {
+    const path = '/';
+
+    fs.readdir(path, {
+            withFileTypes: true
+        },(err, data) => {
         if (err) throw err;
-        res.send(JSON.stringify(data));
+        let formattedData = data.map((fileName) => {
+            return path + fileName;
+        })
+
+        res.send(JSON.stringify(formattedData));
       });
 
 });
 
-app.get('/child', function(req, res) {
-    fs.readdir(req.child, (err, data) => {
+app.post('/child', function(req, res) {
+
+    const path = req.body.parent;
+    console.log(typeof(path));
+    console.log(path);
+
+    fs.readdir(path, (err, data) => {
         if (err) throw err;
-        res.send(JSON.stringify(data));
+        let formattedData = data.map((fileName) => {
+            return path + fileName;
+        })
+
+        res.send(JSON.stringify(formattedData));
     })
 })
 

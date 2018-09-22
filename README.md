@@ -7,4 +7,4 @@ Start application
     $ yarn start
 
 Start server
-    $ node src/server.js
+    $ nodemon src/server.js
